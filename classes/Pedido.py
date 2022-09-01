@@ -13,9 +13,18 @@ import re
 
 
 
-
 class Pedido:
     EM_ABERTO = 1
     PAGO = 2
-    pass
+    
+    def __init__(self, conta_pessoa: PessoaFisica, carrinho: Carrinho):
+        self.pessoa = conta_pessoa
+        self.carrinho = carrinho
+        self.endereco_entrega = None
+        self.endereco_faturamento = None
+        self.status = Pedido.EM_ABERTO
+    
+    
+    def __str__(self) :
+        return f'Cliente: {self.pessoa.nome}\n Endereços: {self.endereco_entrega} e {self.endereco_faturamento}\n Produtos: {self.carrinho.get_itens()}'
     

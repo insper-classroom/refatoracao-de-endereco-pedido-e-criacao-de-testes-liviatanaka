@@ -17,23 +17,44 @@ class PessoaFisica:
     acessar e alterar diretamente a propriedade sem uma verificação.
     '''
 
+    lista_pessoas = []
+
     def __init__(self, cpf, email, nome='Visitante'):
         self.nome = nome
         self.email = email
         self.cpf = cpf
         self.__enderecos = {}
+        PessoaFisica.lista_pessoas.append(self)
 
     # escolher o estilo de retorno
 
     def adicionar_endereco(self, apelido_endereco, end:Endereco):
-        pass
+        self.__enderecos[apelido_endereco] = end
+        return self.__enderecos[apelido_endereco]
 
     def remover_endereco(self, apelido_endereco):
-        pass
+        del self.__enderecos[apelido_endereco]
+        return f'Endereço {apelido_endereco} deletado com sucesso!'
 
     def get_endereco(self, apelido_endereco):
-        pass
+        return self.__enderecos[apelido_endereco]
+
 
     def listar_enderecos(self):
-        pass
+        return list(self.__enderecos.values())
+
+    
+    def __str__(self):
+        return f'{self.nome}'
+    
+    @classmethod
+    def busca_nome(cls, string):
+        resultados = []
+        string = string.capitalize()
+        for pessoa in cls.lista_pessoas:
+            nome_pessoa = pessoa.nome.capitalize()
+            if string == nome_pessoa[:len(string)]:
+                resultados.append(pessoa)
+        return resultados
+
     

@@ -10,5 +10,30 @@
 
 class Produto:
 
-    def __init__(self, id='', nome=''):
-        pass
+    lista_produtos = []
+
+    def __init__(self, id_produto, nome, preco=''):
+        self.__id = id_produto
+        self.nome = nome
+        self.preco = preco
+        Produto.lista_produtos.append(self)
+
+    # ID 
+    def set_id(self, id_novo):
+        self.__id = id_novo
+    
+    def get_id(self):
+        return self.__id
+
+    def to_dict(self):
+        return {'Id':self.__id, 'Nome': self.nome}
+
+    @classmethod
+    def busca_nome(cls, string):
+        resultados = []
+        string = string.capitalize()
+        for produto in cls.lista_produtos:
+            nome = produto.nome.capitalize()
+            if string == nome[:len(string)]:
+                resultados.append(produto)
+        return resultados

@@ -21,10 +21,14 @@ class Endereco:
 
         if (rua == '') or (estado == '') or (cidade == ''):
             end_json = self.consultar_cep(cep)
-
-            self.rua = end_json['logradouro']
-            self.estado = end_json['uf']
-            self.cidade = end_json['localidade']
+            if end_json != False:
+                self.rua = end_json['logradouro']
+                self.estado = end_json['uf']
+                self.cidade = end_json['localidade']
+            else:
+                self.rua = ''
+                self.estado = ''
+                self.cidade = ''
             self.numero = numero
             self.complemento = complemento
             self.cep = str(cep)
@@ -38,28 +42,36 @@ class Endereco:
             self.complemento = complemento
             self.cep = str(cep)
 
-
-    def consultar_cep(self, cep):
+    @classmethod
+    def consultar_cep(cls, cep):
         '''
         Metodo realiza a consulta do cep em uma api publica para obter informações
         como estado, cidade e rua
         '''
         # continuam existindo variaveis locais, nem tudo é propriedade de objeto
+        try:
+            # end point da API de consulta ao cep
+            url_api = f'https://viacep.com.br/ws/{str(cep)}/json/'
 
-        # end point da API de consulta ao cep
-        url_api = f'https://viacep.com.br/ws/{str(cep)}/json/'
+            # Sem corpo na requisição
+            # Não é necessario nenhum cabeçalho HTTP especial
+            payload = {}
+            headers = {}
 
-        # Sem corpo na requisição
-        # Não é necessario nenhum cabeçalho HTTP especial
-        payload = {}
-        headers = {}
+            # requisição GET na url de pesquisa do cep. Doc.: https://viacep.com.br/
+            response = requests.request("GET", url_api, headers=headers, data=payload)
 
-        # requisição GET na url de pesquisa do cep. Doc.: https://viacep.com.br/
-        response = requests.request("GET", url_api, headers=headers, data=payload)
+            # converte a resposta json em dict
+            json_resp = response.json()
+            if json_resp == {"erro": True}:
+                return False
+            return json_resp
+        except json.JSONDecodeError:
+            return False
 
-        # converte a resposta json em dict
-        json_resp = response.json()
-        return json_resp
+
+    def __str__(self):
+        return f'{self.estado} - {self.cidade} - {self.rua}'
 
 
 
