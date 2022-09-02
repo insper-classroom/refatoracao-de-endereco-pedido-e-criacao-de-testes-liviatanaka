@@ -9,7 +9,6 @@
 from classes.Endereco import Endereco
 from classes.PessoaFisica import PessoaFisica
 from classes.Carrinho import Carrinho
-import re
 
 
 

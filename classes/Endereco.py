@@ -73,6 +73,3 @@ class Endereco:
     def __str__(self):
         return f'{self.estado} - {self.cidade} - {self.rua}'
 
-
-
-

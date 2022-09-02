@@ -3,6 +3,16 @@ from classes.Endereco import Endereco
 import requests
 
 @pytest.mark.endereco
+def test_novo_endereco_com_cep_numero():
+    novo_endereco1 = Endereco('04509002', 586)
+    assert novo_endereco1.rua == 'Rua Jacques Félix' 
+
+@pytest.mark.endereco
+def test_novo_endereco_com_tudo():
+    novo_endereco2 = Endereco('12345678', 123, 'rua lucca', 'estado lucca', 'cidade lucca', 130)
+    assert novo_endereco2.rua == 'rua lucca' and novo_endereco2.cep == '12345678' and novo_endereco2.estado == 'estado lucca'
+
+@pytest.mark.endereco
 def test_cep_como_int():
     cep = 20020030
     end_json = Endereco.consultar_cep(cep)
@@ -24,11 +34,6 @@ def test_cep_inexistente():
     cep = '00000000'
     assert False == Endereco.consultar_cep(cep)
 
-
-# def test_falha_conexao():
-#     with pytest.raises(ConnectionError):
-#         raise ConnectionError
-
 @pytest.mark.endereco
 def test_falha_na_conexao():
     with pytest.raises(requests.exceptions.ConnectionError) as excinfo:
@@ -44,6 +49,3 @@ def test_cria_endereco_sem_numero():
         Endereco(cep)
     assert "Endereco.__init__() missing 1 required positional argument: 'numero'" in str(excinfo.value)
 
-# @pytest.mark.endereco
-# def test_falha_conexao():
-#     with pytest.raises(ConnectionError) as excinfo:

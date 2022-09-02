@@ -22,7 +22,12 @@ class Carrinho:
     def adicionar_item(self, item:Produto, qtd):
         
         id = item.get_id()
-        self.__itens[id] = qtd
+        if id in self.__itens:
+            self.__itens[id] += int(qtd)
+        else:
+            self.__itens[id] = int(qtd)
+        
+        return self.__itens[id], id
         
         # Implemente a adição do item no dicionário
         
